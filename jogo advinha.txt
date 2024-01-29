@@ -1,0 +1,79 @@
+# JOGO DO ADVINHA
+# OBJETIVO: VOCÊ TEM 10 CHANCES PARA ADVINHAR A CHAVE ESCOLHIDA ALEATÓRIAMENTE,
+#           E PARA VENCER, VOCÊ PRECISA ACERTAR OS NÚMEROS E SUAS RESPECTIVAS POSIÇÕES.
+
+def traço():
+    print(f'\033[36m=\033[m'*33)
+
+from random import randint
+
+
+chave = []
+escolhaJogador = []
+
+print('\033[36m=' * 8, 'ADVINHE A CHAVE', '=' * 8, '\033[m')
+while len(chave) < 4:
+    sorteio = randint(1, 9)
+    if sorteio not in chave:
+        chave.append(sorteio)
+#print(chave)
+
+c = 1
+numeroCerto = 0
+posicaoCerta = 0
+tentativas = 10
+print(f'    Você terá {tentativas} tentativas    \n')
+while tentativas > 0:
+    while True:
+        while len(escolhaJogador) < 4:
+            num = str(input(f'Digite o {c}º número: ')).strip()
+            if num.isnumeric():
+                num1 = int(num)
+                if num1 < 1 or num1 > 9:
+                    print('Digite apenas números entre 1 e 9..')
+                else:
+                    if num1 not in escolhaJogador:
+                        escolhaJogador.append(num1)
+                        c += 1
+
+            else:
+                  print('\033[31mDigite apenas números inteiro\033[m')
+
+
+        if c > 0:
+            break
+
+
+    for i in escolhaJogador:
+        for i1 in chave:
+            if i == i1:
+                numeroCerto += 1
+
+    for n in escolhaJogador:
+        for n1 in chave:
+            if n == n1 and escolhaJogador.index(n) == chave.index(n1):
+                posicaoCerta += 1
+
+    for h in range(0, 1):
+        print(f'\033[33m   {escolhaJogador}\033[m   ')
+        print(f'Você acertou {numeroCerto} numero(s)', end=' ')
+        print(f'e {posicaoCerta} posição(ões)   ')
+        traço()
+
+
+    if posicaoCerta == 4 and numeroCerto == 4:
+        print('\033[32mPARABÉNS! VOCÊ VENCEU')
+        print(f'A chave é {chave}')
+        break
+    else:
+        tentativas = tentativas - 1
+        if tentativas > 0:
+         print(f'Você ainda possui {tentativas} tentativas')
+        escolhaJogador.clear()
+        posicaoCerta = 0
+        numeroCerto = 0
+        c = 1
+
+if tentativas == 0:
+    print('\033[31mGAME OVER!')
+    print(f'A chave é {chave}\033[m')
